@@ -27,11 +27,13 @@ output "alb_dns_name" {
 resource "aws_launch_configuration" "example" {
   image_id        = "ami-0c55b159cbfafe1f0"
   instance_type   = "t2.micro"
-  security_groups = [aws_security_group.alb.id]
+  security_groups = [aws_security_group.instance.id]
 
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
+              echo "" >> index.html
+              env >> index.html
               nohup busybox httpd -f -p ${var.server_port} &
               EOF
 
@@ -48,8 +50,8 @@ resource "aws_autoscaling_group" "example" {
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
 
-  min_size = 3
-  max_size = 5
+  min_size = 2
+  max_size = 3
 
   tag {
     key                 = "Name"
@@ -112,6 +114,20 @@ resource "aws_lb_listener_rule" "asg" {
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.asg.arn
+  }
+}
+
+resource "aws_security_group" "instance" {
+  name = "terraform-example-instance"
+
+  tags = {
+    "Name" = "terraform-example-instance"
+  }
+  ingress {
+    from_port   = var.server_port
+    to_port     = var.server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
