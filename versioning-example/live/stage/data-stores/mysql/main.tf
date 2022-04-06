@@ -14,7 +14,7 @@ terraform {
 }
 
 module "db" {
-  source = "../../../../modules/data-stores/mysql"
+  source = "github.com/Cameri/terraform-practice//modules/data-stores/mysql?ref=v0.0.1"
 
   identifier_prefix = "stage-master-db"
   db_name           = "staging"

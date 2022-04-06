@@ -14,7 +14,7 @@ terraform {
 }
 
 module "webserver_cluster" {
-  source = "../../../../modules/services/webserver-cluster"
+  source = "github.com/Cameri/terraform-practice//modules/services/webserver-cluster?ref=v0.0.1"
 
   cluster_name           = var.cluster_name
   db_remote_state_bucket = var.db_remote_state_bucket
