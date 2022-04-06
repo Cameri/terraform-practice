@@ -14,7 +14,7 @@ terraform {
 }
 
 module "db" {
-  source = "github.com/Cameri/terraform-practice//modules/data-stores/mysql?ref=v0.0.1"
+  source = "github.com/Cameri/terraform-practice//versioning-example/modules/data-stores/mysql?ref=v0.0.1"
 
   identifier_prefix = "prod-master-db"
   db_name           = "production"
